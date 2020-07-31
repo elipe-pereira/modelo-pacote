@@ -26,7 +26,8 @@ Para a criação de um pacote .deb para as distribuições ubuntu/debian
 exibidos na estrutura básica. 
 
 
-### control
+## control
+
 O arquivo control precisa conter as seguintes linhas: 
 
 Section: misc
@@ -48,7 +49,7 @@ Description: Descrição que aparece quando vc dá um apt-cache search
 ##### Section
 
 Define uma seção para o pacote, como os nosso pacotes não fazem parte do repositório
-oficial, o ideal é deixar como misc
+oficial, o ideal é deixar como misc.
 
 ##### Package
 
@@ -57,7 +58,7 @@ oficial, o ideal é deixar como misc
 
 #####  Priority
 
-Não é obrigatório, sempre deixe como optional
+Não é obrigatório, sempre deixe como optional.
 
 ##### Version: 0.1
 
@@ -92,33 +93,33 @@ service apache2 stop
 
 ---fim do arquivo---
 
-### postrm
+## postrm
 
 Nesse arquivo são colocados os comandos pós remoção do pacote. Também não é recomendado a inserção de comandos aqui, a não ser que seja realmente necessário. 
 
-### preinst
+## preinst
 
 Nesse arquivo são colocados comandos pré instalação. Por exemplo, no caso onde o pacote cujo seu programa depende não tem biblioteca no apt mas tem 
 no repositório pip(python) ou cpamn(perl).
 ex:
-#!/bin/bash
-pip install setuptools
-cpanm -nf --skip-installed Text::Glob
----fim do arquivo--
+  #!/bin/bash
+  pip install setuptools
+  cpanm -nf --skip-installed Text::Glob
+  ---fim do arquivo--
 
-Obs: é sempre bom colocar um || echo "ok" no final do comando. ex: pip install setuptools || echo "ok"
+**Obs:** é sempre bom colocar um || echo "ok" no final do comando. ex: pip install setuptools || echo "ok"
 
 para que caso você tenha digitado algo errado, na hora de instalar o pacote não fique acusando erro na instalação do pacote. 
 
-### postinst
+## postinst
 
 Nesse arquivo vão os comandos pós instalação. Não é obrigado colocar nada nele, mas caso precise reiniciar um serviço após
  a instalação por exemplo, é nesse arquivo que você colocará o comando. 
  
- #!/bin/bash
- service apache2 restart
+   #!/bin/bash
+   service apache2 restart
 
--- fim do arquivo--
+   -- fim do arquivo--
 
 ## Sobre as pastas usr e etc
 
@@ -129,3 +130,65 @@ No caso do modelo_pacote, a estrutura é usr/share/modelo_pacote e etc/modelo_pa
 
 Quando eu instalar no sistema operacional, as pastas serão coladas respectivamente em /usr/share/modelo_pacote e /etc/modelo_pacote. 
 
+# Funções a serem executadas para que o pacote seja instalado via apt-get
+
+## Gogs
+  * Hospeda os arquivos dos programas na estrutura definida para o programa
+
+## Iphakethe
+  * O iphakethe é um utilitário de linha de comando que baixa os pacotes do gogs e cria os pacotes .deb e 
+  logo em seguida envia para o repositório linux. O ideal é que ele seja executado uma vez por dia, mas em momentos
+  de teste podem ser executado manualmente. 
+
+## Apache
+  * No apache é criado o virtualhost onde ficarão os pacotes .deb. Ele só hospeda os arquivos, 
+  não faz mais nada.
+
+## reprepro (Repositório)
+  * É usado pelo iphakethe para criar a estrutura dentro da pasta hospedada pelo apache, 
+  no formato que o apt-get conhece e coloca os pacotes .deb nessa estrutura. 
+
+## dpkg
+  * É também usado pelo iphakethe para gerar o pacote .deb lendo o arquivo control dentro
+  da pasta DEBIAN
+
+# Sequência para a geração de novo pacote
+
+  - Usuário/desenvolvedor faz o commit para o Gogs. 
+  - Eli ou o cron do sistema operacional executa o comando iphakethe
+  - iphakethe baixa os arquivos do gogs, verifica se é um versão nova com base no parâmetro Version dentro do arquivo
+  control visto anteriormente, se a versão for nova, ele envia para o repositório. 
+
+# Configurando 
+
+  vim /etc/apt/souces.list
+  
+  deb http://repo.inforpratica.com.br/ubuntu infor main
+
+  vim /etc/apt/auth.conf.d/login.conf
+     machine repo.inforpratica.com.br
+     login inforpratica
+     password xxxxxxx
+
+   wget http://repo.inforpratica.com.br/inforpratica.gpg.key | apt-key add - 
+
+
+O repositório exige autenticação porque os pacotes não são opensource obviamente. 
+Para efetuar a autenticação basta criar qualquer arquivo .conf dentro de /etc/apt/auth.conf.d
+com os parâmetros acima para que a autenticação ocorra sem programas. 
+
+# Instalado pacotes
+
+Se você fez tudo certo e há pacotes dentro do repositório inforpratica. Então
+
+  apt-get update
+  apt-get install modelo_pacote. 
+
+# Atualizando pacotes
+  apt-get update
+  apt-get install modelo_pacote. 
+
+Para atualizar só precisa executar como se fosse uma nova instalação. 
+
+Obs: Não devem ser colocados arquivos de banco de dados dentro do repositório para gerar pacotes, porque ao executar 
+uma atualização, os arquivos anteriores são apagados. Exceto arquivos que tiverem nomes diferentes. 
