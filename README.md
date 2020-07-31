@@ -4,16 +4,17 @@
   * Garantir o máximo de rapidez e padronização na instalação dos clientes.
 
 #### Estrutura básica
-RAIZ
 
-  |_ DEBIAN
-           |_control
-           |_prerm
-           |_postrm
-           |_preinst
-           |_postinst
-  |_usr
-       |_share
+    RAIZ
+
+   |_ DEBIAN
+            |_control
+            |_prerm
+            |_postrm
+            |_preinst
+            |_postinst
+   |_usr
+        |_share
               |_modelo_pacote
                              |_arquivo01
                              |_arqruivo02
@@ -30,21 +31,14 @@ exibidos na estrutura básica.
 
 O arquivo control precisa conter as seguintes linhas: 
 
-Section: misc
-
-Package: modelo_pacote
-
-Priority: optional
-
-Version: 0.1
-
-Architecture: all
-
-Maintainer: Eli Florêncio Pereira
-
-Depends: pacote, pacote2
-
-Description: Descrição que aparece quando vc dá um apt-cache search 
+    Section: misc
+    Package: modelo_pacote
+    Priority: optional
+    Version: 0.1
+    Architecture: all
+    Maintainer: Eli Florêncio Pereira
+    Depends: pacote, pacote2
+    Description: Descrição que aparece quando vc dá um apt-cache search 
 
 ##### Section
 
@@ -87,11 +81,11 @@ Aqui são inseridos todos os pacotes ao qual seu programa depende. Se não estiv
 
 Nesse arquivo são colocados os comandos pre remoção do pacote. Em geral, não é recomedado colocar nada nele ao não ser que seja realmente necessário. Ex:
 
-#!/bin/bash
+    #!/bin/bash
 
-service apache2 stop
+    service apache2 stop
 
----fim do arquivo---
+    ---fim do arquivo---
 
 ## postrm
 
@@ -102,24 +96,24 @@ Nesse arquivo são colocados os comandos pós remoção do pacote. Também não 
 Nesse arquivo são colocados comandos pré instalação. Por exemplo, no caso onde o pacote cujo seu programa depende não tem biblioteca no apt mas tem 
 no repositório pip(python) ou cpamn(perl).
 ex:
-  #!/bin/bash
-  pip install setuptools
-  cpanm -nf --skip-installed Text::Glob
-  ---fim do arquivo--
+    #!/bin/bash
+    pip install setuptools
+    cpanm -nf --skip-installed Text::Glob
+    ---fim do arquivo--
 
 **Obs:** é sempre bom colocar um || echo "ok" no final do comando. ex: pip install setuptools || echo "ok"
 
-para que caso você tenha digitado algo errado, na hora de instalar o pacote não fique acusando erro na instalação do pacote. 
+para que caso você tenha digitado algo errado, na hora de instalar o apt-get não fique acusando erro na instalação do pacote. 
 
 ## postinst
 
 Nesse arquivo vão os comandos pós instalação. Não é obrigado colocar nada nele, mas caso precise reiniciar um serviço após
  a instalação por exemplo, é nesse arquivo que você colocará o comando. 
  
-   #!/bin/bash
-   service apache2 restart
+    #!/bin/bash
+    service apache2 restart
 
-   -- fim do arquivo--
+    -- fim do arquivo--
 
 ## Sobre as pastas usr e etc
 
@@ -154,23 +148,23 @@ Quando eu instalar no sistema operacional, as pastas serão coladas respectivame
 
 # Sequência para a geração de novo pacote
 
-  - Usuário/desenvolvedor faz o commit para o Gogs. 
-  - Eli ou o cron do sistema operacional executa o comando iphakethe
-  - iphakethe baixa os arquivos do gogs, verifica se é um versão nova com base no parâmetro Version dentro do arquivo
+  * Usuário/desenvolvedor faz o commit para o Gogs. 
+  * Eli ou o cron do sistema operacional executa o comando iphakethe
+  * iphakethe baixa os arquivos do gogs, verifica se é uma versão nova com base no parâmetro Version dentro do arquivo
   control visto anteriormente, se a versão for nova, ele envia para o repositório. 
 
 # Configurando 
 
-  vim /etc/apt/souces.list
+    vim /etc/apt/souces.list
   
-  deb http://repo.inforpratica.com.br/ubuntu infor main
+    deb http://repo.inforpratica.com.br/ubuntu infor main
 
-  vim /etc/apt/auth.conf.d/login.conf
+     vim /etc/apt/auth.conf.d/login.conf
      machine repo.inforpratica.com.br
      login inforpratica
      password xxxxxxx
 
-   wget http://repo.inforpratica.com.br/inforpratica.gpg.key | apt-key add - 
+     wget http://repo.inforpratica.com.br/inforpratica.gpg.key | apt-key add - 
 
 
 O repositório exige autenticação porque os pacotes não são opensource obviamente. 
@@ -181,14 +175,14 @@ com os parâmetros acima para que a autenticação ocorra sem programas.
 
 Se você fez tudo certo e há pacotes dentro do repositório inforpratica. Então
 
-  apt-get update
-  apt-get install modelo_pacote. 
+    apt-get update
+    apt-get install modelo_pacote. 
 
 # Atualizando pacotes
-  apt-get update
-  apt-get install modelo_pacote. 
+    apt-get update
+    apt-get install modelo_pacote. 
 
 Para atualizar só precisa executar como se fosse uma nova instalação. 
 
-Obs: Não devem ser colocados arquivos de banco de dados dentro do repositório para gerar pacotes, porque ao executar 
+**Obs:** Não devem ser colocados arquivos de banco de dados dentro do repositório para gerar pacotes, porque ao executar 
 uma atualização, os arquivos anteriores são apagados. Exceto arquivos que tiverem nomes diferentes. 
