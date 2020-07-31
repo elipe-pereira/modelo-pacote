@@ -175,11 +175,11 @@ com os parâmetros acima para que a autenticação ocorra sem programas.
 Se você fez tudo certo e há pacotes dentro do repositório inforpratica. Então
 
     apt-get update
-    apt-get install modelo_pacote. 
+    apt-get install modelo_pacote
 
 ## Atualizando pacotes
     apt-get update
-    apt-get install modelo_pacote. 
+    apt-get install modelo_pacote 
 
 Para atualizar só precisa executar como se fosse uma nova instalação. 
 
