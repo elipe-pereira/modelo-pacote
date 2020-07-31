@@ -6,21 +6,20 @@
 #### Estrutura básica
 
     RAIZ
-
-   |_ DEBIAN
+    |_ DEBIAN
             |_control
             |_prerm
             |_postrm
             |_preinst
             |_postinst
-   |_usr
-        |_share
-              |_modelo_pacote
-                             |_arquivo01
-                             |_arqruivo02
-  |_etc
-       |_modelo_pacote
-                      |_arquivo01.conf
+    |_usr
+         |_share
+                |_modelo_pacote
+                               |_arquivo01
+                               |_arqruivo02
+    |_etc
+         |_modelo_pacote
+                        |_arquivo01.conf
 
 Para a criação de um pacote .deb para as distribuições ubuntu/debian
 é obrigatório exisitir a pasta de DEBIAN (em maísculo) como os respectivos arquivos
@@ -124,36 +123,36 @@ No caso do modelo_pacote, a estrutura é usr/share/modelo_pacote e etc/modelo_pa
 
 Quando eu instalar no sistema operacional, as pastas serão coladas respectivamente em /usr/share/modelo_pacote e /etc/modelo_pacote. 
 
-# Funções a serem executadas para que o pacote seja instalado via apt-get
+## Funções a serem executadas para que o pacote seja instalado via apt-get
 
-## Gogs
+### Gogs
   * Hospeda os arquivos dos programas na estrutura definida para o programa
 
-## Iphakethe
+### Iphakethe
   * O iphakethe é um utilitário de linha de comando que baixa os pacotes do gogs e cria os pacotes .deb e 
   logo em seguida envia para o repositório linux. O ideal é que ele seja executado uma vez por dia, mas em momentos
   de teste podem ser executado manualmente. 
 
-## Apache
+### Apache
   * No apache é criado o virtualhost onde ficarão os pacotes .deb. Ele só hospeda os arquivos, 
   não faz mais nada.
 
-## reprepro (Repositório)
+### reprepro (Repositório)
   * É usado pelo iphakethe para criar a estrutura dentro da pasta hospedada pelo apache, 
   no formato que o apt-get conhece e coloca os pacotes .deb nessa estrutura. 
 
-## dpkg
+### dpkg
   * É também usado pelo iphakethe para gerar o pacote .deb lendo o arquivo control dentro
   da pasta DEBIAN
 
-# Sequência para a geração de novo pacote
+## Sequência para a geração de novo pacote
 
   * Usuário/desenvolvedor faz o commit para o Gogs. 
   * Eli ou o cron do sistema operacional executa o comando iphakethe
   * iphakethe baixa os arquivos do gogs, verifica se é uma versão nova com base no parâmetro Version dentro do arquivo
   control visto anteriormente, se a versão for nova, ele envia para o repositório. 
 
-# Configurando 
+## Configurando 
 
     vim /etc/apt/souces.list
   
@@ -171,14 +170,14 @@ O repositório exige autenticação porque os pacotes não são opensource obvia
 Para efetuar a autenticação basta criar qualquer arquivo .conf dentro de /etc/apt/auth.conf.d
 com os parâmetros acima para que a autenticação ocorra sem programas. 
 
-# Instalado pacotes
+## Instalado pacotes
 
 Se você fez tudo certo e há pacotes dentro do repositório inforpratica. Então
 
     apt-get update
     apt-get install modelo_pacote. 
 
-# Atualizando pacotes
+## Atualizando pacotes
     apt-get update
     apt-get install modelo_pacote. 
 
