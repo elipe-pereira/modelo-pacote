@@ -1,0 +1,8 @@
+Section: misc
+Package: modelo_pacote
+Priority: optional
+Version: 0.0.1
+Architecture: all
+Maintainer: Eli Florêncio Pereira
+Depends: bash
+Description: Descrição que aparece quando vc dá um apt-cache searc

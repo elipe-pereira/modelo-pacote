@@ -22,7 +22,7 @@
                         |_arquivo01.conf
 
 Para a criação de um pacote .deb para as distribuições ubuntu/debian
-é obrigatório exisitir a pasta de DEBIAN (em maísculo) como os respectivos arquivos
+é obrigatório exisitir a pasta DEBIAN (em maísculo) com os respectivos arquivos
 exibidos na estrutura básica. 
 
 
@@ -41,13 +41,13 @@ O arquivo control precisa conter as seguintes linhas:
 
 ##### Section
 
-Define uma seção para o pacote, como os nosso pacotes não fazem parte do repositório
+Define uma seção para o pacote, como os nossos pacotes não fazem parte do repositório
 oficial, o ideal é deixar como misc.
 
 ##### Package
 
-É o nome do pacote .deb que será gerado. Quando vc for instalar, ex: apt-get install modelo_pacote
-é por causa desse parâmetro que define o nome. 
+É o nome do pacote .deb que será gerado. Quando você for instalar, ex: apt-get install modelo_pacote
+é por causa desse parâmetro que o nome do pacote é definido. 
 
 #####  Priority
 
@@ -60,7 +60,7 @@ Ao commitar uma nova versão esse valor deve mudar para que o pacote anterior se
 
 ##### Architecture
 
-As três possível são amd64, i386 e all para noarch. Se você compilou o pacote, você deve colocar em que arquitetura
+As três possíveis são amd64, i386 e all para noarch. Se você compilou o pacote, você deve colocar em que arquitetura
 ele foi compilado (amd64 ou i386), caso contrário você deve somente colocar all. 
 
 ##### Maintainer
@@ -126,7 +126,7 @@ Quando eu instalar no sistema operacional, as pastas serão coladas respectivame
 ## Funções a serem executadas para que o pacote seja instalado via apt-get
 
 ### Gogs
-  * Hospeda os arquivos dos programas na estrutura definida para o programa
+  * Hospeda os arquivos dos programas na estrutura definida para o programa.
 
 ### Iphakethe
   * O iphakethe é um utilitário de linha de comando que baixa os pacotes do gogs e cria os pacotes .deb e 
@@ -143,7 +143,7 @@ Quando eu instalar no sistema operacional, as pastas serão coladas respectivame
 
 ### dpkg
   * É também usado pelo iphakethe para gerar o pacote .deb lendo o arquivo control dentro
-  da pasta DEBIAN
+  da pasta DEBIAN.
 
 ## Sequência para a geração de novo pacote
 
