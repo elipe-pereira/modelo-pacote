@@ -31,13 +31,15 @@ exibidos na estrutura básica.
 O arquivo control precisa conter as seguintes linhas: 
 
     Section: misc
-    Package: modelo_pacote
+    Package: modelo-pacote
     Priority: optional
     Version: 0.1
     Architecture: all
     Maintainer: Eli Florêncio Pereira
     Depends: pacote, pacote2
     Description: Descrição que aparece quando vc dá um apt-cache search 
+
+**Obs:** Nomes de pacotes não podem conter underline, somente hífen
 
 ##### Section
 

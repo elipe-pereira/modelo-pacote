@@ -2,7 +2,7 @@
 Package: modelo-pacote
 Section: misc
 Priority: optional
-Version: 0.0.3
+Version: 0.0.4
 Architecture: all
 Maintainer: Eli Florêncio Pereira
 Depends: bash
