@@ -39,7 +39,7 @@ O arquivo control precisa conter as seguintes linhas:
     Depends: pacote, pacote2
     Description: Descrição que aparece quando vc dá um apt-cache search 
 
-**Obs:** Nomes de pacotes não podem conter underline, somente hífen
+**Obs:** Nomes de pacotes não podem conter underline, somente hífen, então respectivamente não deve se colocar o nome do repositório com underline também. 
 
 ##### Section
 
